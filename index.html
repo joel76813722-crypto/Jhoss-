@@ -25,54 +25,37 @@
       height: 100%;
     }
 
-    /* BOTÓN DE MÚSICA */
     #botonMusica {
       position: fixed;
       left: 50%;
       bottom: 25px;
       transform: translateX(-50%);
       z-index: 9999;
-
       border: none;
       border-radius: 30px;
       padding: 14px 25px;
-
       background: rgba(255, 215, 0, 0.95);
       color: #3b2500;
-
       font-size: 16px;
       font-weight: bold;
-
       cursor: pointer;
-
       box-shadow: 0 4px 20px rgba(255, 215, 0, 0.35);
-
-      transition: 0.3s;
     }
 
     #botonMusica:hover {
       transform: translateX(-50%) scale(1.05);
     }
 
-    #botonMusica:active {
-      transform: translateX(-50%) scale(0.97);
-    }
-
-    /* MENSAJE */
     #mensajeMusica {
       position: fixed;
       left: 50%;
       bottom: 80px;
       transform: translateX(-50%);
-
       z-index: 9998;
-
       color: white;
       font-size: 14px;
       text-align: center;
-
       text-shadow: 0 2px 5px black;
-
       pointer-events: none;
     }
   </style>
@@ -84,21 +67,18 @@
 
   <!-- MÚSICA -->
   <audio id="musica" preload="auto" loop>
-    <source src="Entre tus brazos quiero quedarme.m4a.mp3" type="audio/mpeg">
-    Tu navegador no puede reproducir este audio.
+    <source src="Entre tus brazos quiero quedarme.m4a (2).mp3" type="audio/mpeg">
   </audio>
 
-  <!-- BOTÓN -->
+  <!-- BOTÓN DE MÚSICA -->
   <button id="botonMusica">▶️ Reproducir música</button>
 
   <div id="mensajeMusica"></div>
 
-  <!-- THREE.JS -->
   <script type="importmap">
   {
     "imports": {
-      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
     }
   }
   </script>
@@ -137,7 +117,7 @@
 
       } catch (error) {
 
-        console.error("Error al reproducir:", error);
+        console.error(error);
 
         mensajeMusica.innerHTML =
           "No se pudo reproducir la música.";
@@ -147,7 +127,7 @@
     });
 
     /* =========================
-       ESCENA THREE.JS
+       ESCENA
     ========================= */
 
     const container = document.getElementById("container");
@@ -185,12 +165,12 @@
        LUCES
     ========================= */
 
-    const ambientLight = new THREE.AmbientLight(
-      0xffffff,
-      1
+    scene.add(
+      new THREE.AmbientLight(
+        0xffffff,
+        1
+      )
     );
-
-    scene.add(ambientLight);
 
     /* =========================
        ESTRELLAS
@@ -202,7 +182,9 @@
     const starCount = 1800;
 
     const starPositions =
-      new Float32Array(starCount * 3);
+      new Float32Array(
+        starCount * 3
+      );
 
     for (let i = 0; i < starCount; i++) {
 
@@ -251,7 +233,9 @@
     const galaxyCount = 2500;
 
     const galaxyPositions =
-      new Float32Array(galaxyCount * 3);
+      new Float32Array(
+        galaxyCount * 3
+      );
 
     for (let i = 0; i < galaxyCount; i++) {
 
@@ -306,38 +290,18 @@
 
     scene.add(heartGroup);
 
-    function crearCorazon(x, y, z) {
-
-      const shape =
-        new THREE.Shape();
-
-      shape.moveTo(0, 0);
-
-      shape.bezierCurveTo(
-        -0.5,
-        -0.5,
-        -1,
-        0.3,
-        0,
-        1
-      );
-
-      shape.bezierCurveTo(
-        1,
-        0.3,
-        0.5,
-        -0.5,
-        0,
-        0
-      );
+    for (let i = 0; i < 25; i++) {
 
       const geometry =
-        new THREE.ShapeGeometry(shape);
+        new THREE.SphereGeometry(
+          0.25,
+          12,
+          12
+        );
 
       const material =
         new THREE.MeshBasicMaterial({
-          color: 0xffd700,
-          side: THREE.DoubleSide
+          color: 0xffd700
         });
 
       const heart =
@@ -347,27 +311,12 @@
         );
 
       heart.position.set(
-        x,
-        y,
-        z
-      );
-
-      heart.scale.set(
-        0.7,
-        0.7,
-        0.7
-      );
-
-      heartGroup.add(heart);
-    }
-
-    for (let i = 0; i < 25; i++) {
-
-      crearCorazon(
         (Math.random() - 0.5) * 35,
         (Math.random() - 0.5) * 25,
         (Math.random() - 0.5) * 20
       );
+
+      heartGroup.add(heart);
 
     }
 
@@ -383,13 +332,6 @@
 
     const ctx =
       canvas.getContext("2d");
-
-    ctx.clearRect(
-      0,
-      0,
-      canvas.width,
-      canvas.height
-    );
 
     ctx.fillStyle = "#fff4a3";
 
@@ -527,7 +469,8 @@
         tiempo * 0.08;
 
       textSprite.position.y =
-        10 + Math.sin(tiempo) * 0.5;
+        10 +
+        Math.sin(tiempo) * 0.5;
 
       renderer.render(
         scene,
@@ -539,7 +482,7 @@
     animate();
 
     /* =========================
-       AJUSTE DE PANTALLA
+       PANTALLA
     ========================= */
 
     window.addEventListener(
